@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block title %} Reading {% endblock %}
+
+{% block content %}
+<h1 align="center">Daily read</h1>
+<form method="POST">
+  <div class="form-group">
+    <label for="read">How many pages did you read today?</label>
+    <input
+      type="float"
+      class="form-control"
+      id="read"
+      name="read"
+    />
+  </div>
+   <br />
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<br>
+<h4 align="center">Today: {{ today_read }} pages</h4>
+<br>
+<h4 align="center">Average: {{ average }} pages</h4>
+<br>
+<h4 align="center">Total pages: {{ total_read }} pages</h4>
+
+{{ div_placeholder }}
+
+{% endblock %}

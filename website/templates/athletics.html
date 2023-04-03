@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block title %} Athletics {% endblock %}
+
+{% block content %}
+<h1 align="center">Daily run</h1>
+<form method="POST">
+  <div class="form-group">
+    <label for="run">How many kilometers did you run today?</label>
+    <input
+      type="float"
+      class="form-control"
+      id="run"
+      name="run"
+    />
+  </div>
+   <br />
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<br>
+<h4 align="center">Today: {{ run }} km</h4>
+<br>
+<h4 align="center">Average: {{ average }} km</h4>
+<br>
+<h4 align="center">Total distance: {{ total_run }} km</h4>
+
+{{ div_placeholder }}
+
+{% endblock %}
