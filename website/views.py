@@ -163,7 +163,7 @@ def reading():
 
         today_read = read_pages
 
-    return render_template("reading.html", user=current_user, today_read=today_read, average=round(average, 2),
+    return render_template("reading.html", user=current_user, today_read=today_read, average=round(average, 1),
                            total_read=total_read, div_placeholder=Markup(my_plot_div))
 
 
