@@ -32,7 +32,8 @@ def create_app():
 
     from .models import User, Note, Kilometers
 
-    create_database(app)
+    # create only when you want to modify the base
+    # create_database(app)
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'

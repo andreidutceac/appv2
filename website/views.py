@@ -56,10 +56,15 @@ def athletics():
         dates.append((run.date))
     my_plot_div = plot([Scatter(x=dates, y=trainings)], output_type='div')
 
+    # calculate the average
+    length = 0
     for run in runs:
-        total_run = total_run + run.km
+        if run.km != 0:
+            total_run = total_run + run.km
+            length = length + 1
+
     if len(runs) != 0:
-        average = (total_run / len(runs))
+        average = (total_run / length)
 
     # set km=0 automatically each day in case there is no running
     if Kilometers.query.filter_by(date=f"{today}").first() and Kilometers.query.filter_by(
@@ -116,12 +121,16 @@ def reading():
     my_plot_div = plot([Scatter(x=dates, y=pages)], output_type='div')
 
     reads = Reading.query.filter_by(user_id=f"{current_user.id}").all()
-    print(len(reads))
+
+    # calculate the average
+    length = 0
     for read in reads:
-        print(read.pages)
-        total_read = total_read + read.pages
-    if len(reads) !=0:
-        average =(total_read/len(reads))
+        if read.pages != 0:
+            total_read = total_read + read.pages
+            length = length + 1
+
+    if len(reads) != 0:
+        average = (total_read / length)
 
     # set pages = 0 automatically each day in case there is no reading
     if Reading.query.filter_by(date=f"{today}").first() and Reading.query.filter_by(
