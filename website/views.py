@@ -61,10 +61,18 @@ def athletics():
     if len(runs) != 0:
         average = (total_run / len(runs))
 
+    # set km=0 automatically each day in case there is no running
+    if Kilometers.query.filter_by(date=f"{today}").first() and Kilometers.query.filter_by(
+            user_id=f"{current_user.id}").first():
+        pass
+    else:
+        save = Kilometers(km=0, date=f"{today}", user_id=current_user.id)
+        db.session.add(save)  # adding the note to the database
+        db.session.commit()
+
+    # if press the submit button
     if request.method == 'POST':
         run_distance = request.form.get('run')
-
-
 
         if len(run_distance) < 1:
             flash('Not valid!', category='error')
@@ -82,12 +90,14 @@ def athletics():
 
         today_run = run_distance
 
+
+
     return render_template("athletics.html", user=current_user, run=today_run, average=round(average,2),
                            total_run=total_run, div_placeholder=Markup(my_plot_div))
 
 
 @views.route('/reading', methods=['POST', 'GET'])
-@login_required
+# @login_required
 def reading():
     today = datetime.date.today()
     today_read = ""
@@ -113,6 +123,16 @@ def reading():
     if len(reads) !=0:
         average =(total_read/len(reads))
 
+    # set pages = 0 automatically each day in case there is no reading
+    if Reading.query.filter_by(date=f"{today}").first() and Reading.query.filter_by(
+            user_id=f"{current_user.id}").first():
+        pass
+    else:
+        save = Reading(pages=0, date=f"{today}", user_id=current_user.id)
+        db.session.add(save)  # adding the note to the database
+        db.session.commit()
+
+    # if press the submit button
     if request.method == 'POST':
         read_pages = request.form.get('read')
         print(read_pages)
