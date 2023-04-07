@@ -79,7 +79,7 @@ def athletics():
     if request.method == 'POST':
         run_distance = request.form.get('run')
 
-        if len(run_distance) < 1:
+        if len(run_distance) < 0:
             flash('Not valid!', category='error')
         else:
             if Kilometers.query.filter_by(date=f"{today}").first() and Kilometers.query.filter_by(user_id=f"{current_user.id}").first():
@@ -147,7 +147,7 @@ def reading():
         print(read_pages)
 
 
-        if len(read_pages) < 1:
+        if len(read_pages) < 0:
             flash('Not valid!', category='error')
         else:
             if Reading.query.filter_by(date=f"{today}").first() and Reading.query.filter_by(user_id=f"{current_user.id}").first():
