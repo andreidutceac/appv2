@@ -63,7 +63,7 @@ def athletics():
             total_run = total_run + run.km
             length = length + 1
 
-    if len(runs) != 0:
+    if length != 0:
         average = (total_run / length)
 
     # set km=0 automatically each day in case there is no running
@@ -102,7 +102,7 @@ def athletics():
 
 
 @views.route('/reading', methods=['POST', 'GET'])
-# @login_required
+@login_required
 def reading():
     today = datetime.date.today()
     today_read = ""
@@ -129,7 +129,7 @@ def reading():
             total_read = total_read + read.pages
             length = length + 1
 
-    if len(reads) != 0:
+    if length != 0:
         average = (total_read / length)
 
     # set pages = 0 automatically each day in case there is no reading
