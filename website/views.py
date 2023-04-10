@@ -81,7 +81,7 @@ def athletics():
         print(current_user.id)
         id_item = current_user.id
 
-        if len(run_distance) < 1:
+        if len(run_distance) < 0:
             flash('Not valid!', category='error')
         else:
             if Kilometers.query.filter_by(date=f"{today}") and Kilometers.query.filter_by(user_id=f"{current_user.id}").first():
@@ -151,7 +151,7 @@ def reading():
         id_item = current_user.id
 
 
-        if len(read_pages) < 1:
+        if len(read_pages) < 0:
             flash('Not valid!', category='error')
         else:
             if Reading.query.filter_by(date=f"{today}") and Reading.query.filter_by(user_id=f"{current_user.id}").first():
