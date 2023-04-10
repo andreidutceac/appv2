@@ -78,16 +78,19 @@ def athletics():
     # if press the submit button
     if request.method == 'POST':
         run_distance = request.form.get('run')
+        print(current_user.id)
+        id_item = current_user.id
 
         if len(run_distance) < 1:
             flash('Not valid!', category='error')
         else:
-            if Kilometers.query.filter_by(date=f"{today}").first() and Kilometers.query.filter_by(user_id=f"{current_user.id}").first():
-                values = Kilometers.query.filter_by(date=f"{today}").first()
+            if Kilometers.query.filter_by(date=f"{today}") and Kilometers.query.filter_by(user_id=f"{current_user.id}").first():
+                values = Kilometers.query.filter_by(date=f"{today}").first() and Kilometers.query.filter_by(user_id=f"{current_user.id}").first()
                 values.km = run_distance
                 db.session.commit()
+                print("this")
             else:
-                save = Kilometers(km=run_distance, date=f"{today}" , user_id=current_user.id)
+                save = Kilometers(km=run_distance, date=f"{today}", user_id=id_item)
                 db.session.add(save)  # adding the note to the database
                 db.session.commit()
                 flash('Save added!', category='success')
@@ -144,18 +147,19 @@ def reading():
     # if press the submit button
     if request.method == 'POST':
         read_pages = request.form.get('read')
-        print(read_pages)
+        print(current_user.id)
+        id_item = current_user.id
 
 
         if len(read_pages) < 1:
             flash('Not valid!', category='error')
         else:
-            if Reading.query.filter_by(date=f"{today}").first() and Reading.query.filter_by(user_id=f"{current_user.id}").first():
-                values = Reading.query.filter_by(date=f"{today}").first()
+            if Reading.query.filter_by(date=f"{today}") and Reading.query.filter_by(user_id=f"{current_user.id}").first():
+                values = Reading.query.filter_by(date=f"{today}").first() and Reading.query.filter_by(user_id=f"{current_user.id}").first()
                 values.pages = read_pages
                 db.session.commit()
             else:
-                save = Reading(pages=read_pages, date=f"{today}", user_id=current_user.id)
+                save = Reading(pages=read_pages, date=f"{today}", user_id=id_item)
                 db.session.add(save)  # adding the note to the database
                 db.session.commit()
                 flash('Save added!', category='success')
