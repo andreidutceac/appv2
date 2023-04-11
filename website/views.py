@@ -48,12 +48,28 @@ def athletics():
 
     trainings = []
     dates = []
+    runs = []
 
     runs = Kilometers.query.filter_by(user_id=f"{current_user.id}").all()
 
     for run in runs:
-        trainings.append(int(run.km))
+        trainings.append((run.km))
         dates.append((run.date))
+        print(run.km)
+
+    # sort values by dates
+    n = len(dates)
+    for i in range(n):
+        for j in range(n - 1):
+            if dates[j] > dates[j + 1]:
+                val = dates[j]
+                dates[j] = dates[j + 1]
+                dates[j + 1] = val
+
+                val2 = trainings[j]
+                trainings[j] = trainings[j + 1]
+                trainings[j + 1] = val2
+
     my_plot_div = plot([Scatter(x=dates, y=trainings)], output_type='div')
 
     # calculate the average
@@ -85,10 +101,14 @@ def athletics():
             flash('Not valid!', category='error')
         else:
             if Kilometers.query.filter_by(date=f"{today}") and Kilometers.query.filter_by(user_id=f"{current_user.id}").first():
-                values = Kilometers.query.filter_by(date=f"{today}").first() and Kilometers.query.filter_by(user_id=f"{current_user.id}").first()
-                values.km = run_distance
-                db.session.commit()
-                print("this")
+
+                runs = Kilometers.query.filter_by(date=f"{today}").all()
+                for run in runs:
+                    print(run.user_id)
+                    if run.user_id == current_user.id:
+                        run.km = run_distance
+                        db.session.commit()
+                print("exista")
             else:
                 save = Kilometers(km=run_distance, date=f"{today}", user_id=id_item)
                 db.session.add(save)  # adding the note to the database
@@ -121,6 +141,23 @@ def reading():
         pages.append(int(read.pages))
         dates.append((read.date))
 
+
+    # sort values by dates
+    n = len(pages)
+    for i in range(n):
+        for j in range(n-1):
+            if dates[j] > dates[j+1]:
+                val = dates[j]
+                dates[j] = dates[j+1]
+                dates[j+1] = val
+
+                val2 = pages[j]
+                pages[j] = pages[j + 1]
+                pages[j + 1] = val2
+
+    print(dates)
+    print(pages)
+
     my_plot_div = plot([Scatter(x=dates, y=pages)], output_type='div')
 
     reads = Reading.query.filter_by(user_id=f"{current_user.id}").all()
@@ -149,15 +186,22 @@ def reading():
         read_pages = request.form.get('read')
         print(current_user.id)
         id_item = current_user.id
+        today = datetime.date.today()
 
 
         if len(read_pages) < 0:
             flash('Not valid!', category='error')
         else:
             if Reading.query.filter_by(date=f"{today}") and Reading.query.filter_by(user_id=f"{current_user.id}").first():
-                values = Reading.query.filter_by(date=f"{today}").first() and Reading.query.filter_by(user_id=f"{current_user.id}").first()
-                values.pages = read_pages
-                db.session.commit()
+                reads = Reading.query.filter_by(date=f"{today}").all()
+                for read in reads:
+                    print(read.user_id)
+                    if read.user_id == current_user.id:
+                        read.pages = read_pages
+                        db.session.commit()
+                print("exista")
+
+
             else:
                 save = Reading(pages=read_pages, date=f"{today}", user_id=id_item)
                 db.session.add(save)  # adding the note to the database
