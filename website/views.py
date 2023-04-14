@@ -7,6 +7,7 @@ import datetime
 from plotly.offline import plot
 from plotly.graph_objs import Scatter
 from flask import Markup
+from datetime import timedelta
 
 views = Blueprint('views', __name__)
 
@@ -50,12 +51,12 @@ def athletics():
     dates = []
     runs = []
 
+
     runs = Kilometers.query.filter_by(user_id=f"{current_user.id}").all()
 
     for run in runs:
         trainings.append((run.km))
         dates.append((run.date))
-        print(run.km)
 
     # sort values by dates
     n = len(dates)
@@ -70,6 +71,31 @@ def athletics():
                 trainings[j] = trainings[j + 1]
                 trainings[j + 1] = val2
 
+
+
+    while str(today) > str(dates[n-1]):
+        today = today + timedelta(days=-1)
+        if str(today) == str(dates[n-1]):
+            break
+        dates.append(str(today))
+        trainings.append(0)
+        ok = 0
+
+        if Kilometers.query.filter_by(date=f"{today}").all():
+            runs = Kilometers.query.filter_by(date=f"{today}").all()
+            for run in runs:
+                if run.user_id == current_user.id:
+                    ok = 1
+            if ok == 0:
+                save = Kilometers(km=0, date=f"{today}", user_id=current_user.id)
+                db.session.add(save)  # adding the note to the database
+                db.session.commit()
+
+
+
+    print(trainings)
+
+
     my_plot_div = plot([Scatter(x=dates, y=trainings)], output_type='div')
 
     # calculate the average
@@ -83,18 +109,26 @@ def athletics():
         average = (total_run / length)
 
     # set km=0 automatically each day in case there is no running
-    if Kilometers.query.filter_by(date=f"{today}").first() and Kilometers.query.filter_by(
-            user_id=f"{current_user.id}").first():
-        pass
-    else:
+    today = datetime.date.today()
+    ok=0
+    runs = Kilometers.query.filter_by(date=f"{today}").all()
+    for run in runs:
+        if run.user_id == current_user.id:
+            ok = 1
+            print("user")
+    if ok == 0:
         save = Kilometers(km=0, date=f"{today}", user_id=current_user.id)
         db.session.add(save)  # adding the note to the database
         db.session.commit()
 
+
+
+
     # if press the submit button
     if request.method == 'POST':
+        today = datetime.date.today()
         run_distance = request.form.get('run')
-        print(current_user.id)
+        #print(run_distance)
         id_item = current_user.id
 
         if len(run_distance) < 0:
@@ -102,10 +136,12 @@ def athletics():
         else:
             if Kilometers.query.filter_by(date=f"{today}") and Kilometers.query.filter_by(user_id=f"{current_user.id}").first():
 
+
                 runs = Kilometers.query.filter_by(date=f"{today}").all()
                 for run in runs:
-                    print(run.user_id)
+                    print(str(today))
                     if run.user_id == current_user.id:
+                        print(run_distance)
                         run.km = run_distance
                         db.session.commit()
                 print("exista")
@@ -141,7 +177,6 @@ def reading():
         pages.append(int(read.pages))
         dates.append((read.date))
 
-
     # sort values by dates
     n = len(pages)
     for i in range(n):
@@ -158,6 +193,24 @@ def reading():
     print(dates)
     print(pages)
 
+    while str(today) > str(dates[n-1]):
+        today = today + timedelta(days=-1)
+        if str(today) == str(dates[n-1]):
+            break
+        dates.append(str(today))
+        pages.append(0)
+        ok = 0
+
+        if Reading.query.filter_by(date=f"{today}").all():
+            reads = Reading.query.filter_by(date=f"{today}").all()
+            for read in reads:
+                if read.user_id == current_user.id:
+                    ok = 1
+            if ok == 0:
+                save = Reading(pages=0, date=f"{today}", user_id=current_user.id)
+                db.session.add(save)  # adding the note to the database
+                db.session.commit()
+
     my_plot_div = plot([Scatter(x=dates, y=pages)], output_type='div')
 
     reads = Reading.query.filter_by(user_id=f"{current_user.id}").all()
@@ -173,10 +226,14 @@ def reading():
         average = (total_read / length)
 
     # set pages = 0 automatically each day in case there is no reading
-    if Reading.query.filter_by(date=f"{today}").first() and Reading.query.filter_by(
-            user_id=f"{current_user.id}").first():
-        pass
-    else:
+    today = datetime.date.today()
+    ok = 0
+    reads = Reading.query.filter_by(date=f"{today}").all()
+    for read in reads:
+        if read.user_id == current_user.id:
+            ok = 1
+            print("user")
+    if ok == 0:
         save = Reading(pages=0, date=f"{today}", user_id=current_user.id)
         db.session.add(save)  # adding the note to the database
         db.session.commit()
