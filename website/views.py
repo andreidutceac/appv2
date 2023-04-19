@@ -179,7 +179,7 @@ def athletics():
 
 
     return render_template("athletics.html", user=current_user, run=today_run, average=round(average,2),
-                           total_run=total_run, div_placeholder=Markup(my_plot_div))
+                           total_run=round(total_run,2), div_placeholder=Markup(my_plot_div))
     # , date1=date1, title1=title1,
     #                        link1=link1, date2=date2, title2=title2, link2=link2, date3=date3, title3=title3, link3=link3,
     #                        date4=date4, title4=title4, link4=link4, date5=date5, title5=title5, link5=link5)
