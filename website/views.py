@@ -14,6 +14,7 @@ from .news import get_news
 
 views = Blueprint('views', __name__)
 
+
 day_articles = get_news()
 date1 = day_articles[0]["date"]
 title1 = day_articles[0]["title"]
