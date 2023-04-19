@@ -14,6 +14,23 @@ from .news import get_news
 
 views = Blueprint('views', __name__)
 
+day_articles = get_news()
+date1 = day_articles[0]["date"]
+title1 = day_articles[0]["title"]
+link1 = day_articles[0]["link"]
+date2 = day_articles[1]["date"]
+title2 = day_articles[1]["title"]
+link2 = day_articles[1]["link"]
+date3 = day_articles[2]["date"]
+title3 = day_articles[2]["title"]
+link3 = day_articles[2]["link"]
+date4 = day_articles[3]["date"]
+title4 = day_articles[3]["title"]
+link4 = day_articles[3]["link"]
+date5 = day_articles[4]["date"]
+title5 = day_articles[4]["title"]
+link5 = day_articles[4]["link"]
+
 
 @views.route('/', methods=['GET', 'POST'])
 @login_required
@@ -157,22 +174,7 @@ def athletics():
 
         today_run = run_distance
 
-    day_articles = get_news()
-    date1 = day_articles[0]["date"]
-    title1 = day_articles[0]["title"]
-    link1 = day_articles[0]["link"]
-    date2 = day_articles[1]["date"]
-    title2 = day_articles[1]["title"]
-    link2 = day_articles[1]["link"]
-    date3 = day_articles[2]["date"]
-    title3 = day_articles[2]["title"]
-    link3 = day_articles[2]["link"]
-    date4 = day_articles[3]["date"]
-    title4 = day_articles[3]["title"]
-    link4 = day_articles[3]["link"]
-    date5 = day_articles[4]["date"]
-    title5 = day_articles[4]["title"]
-    link5 = day_articles[4]["link"]
+
 
 
     return render_template("athletics.html", user=current_user, run=today_run, average=round(average,2),
