@@ -8,29 +8,29 @@ from plotly.offline import plot
 from plotly.graph_objs import Scatter
 from flask import Markup
 from datetime import timedelta
-from .news import get_news
+# from .news import get_news
 
 
 
 views = Blueprint('views', __name__)
 
 
-day_articles = get_news()
-date1 = day_articles[0]["date"]
-title1 = day_articles[0]["title"]
-link1 = day_articles[0]["link"]
-date2 = day_articles[1]["date"]
-title2 = day_articles[1]["title"]
-link2 = day_articles[1]["link"]
-date3 = day_articles[2]["date"]
-title3 = day_articles[2]["title"]
-link3 = day_articles[2]["link"]
-date4 = day_articles[3]["date"]
-title4 = day_articles[3]["title"]
-link4 = day_articles[3]["link"]
-date5 = day_articles[4]["date"]
-title5 = day_articles[4]["title"]
-link5 = day_articles[4]["link"]
+# day_articles = get_news()
+# date1 = day_articles[0]["date"]
+# title1 = day_articles[0]["title"]
+# link1 = day_articles[0]["link"]
+# date2 = day_articles[1]["date"]
+# title2 = day_articles[1]["title"]
+# link2 = day_articles[1]["link"]
+# date3 = day_articles[2]["date"]
+# title3 = day_articles[2]["title"]
+# link3 = day_articles[2]["link"]
+# date4 = day_articles[3]["date"]
+# title4 = day_articles[3]["title"]
+# link4 = day_articles[3]["link"]
+# date5 = day_articles[4]["date"]
+# title5 = day_articles[4]["title"]
+# link5 = day_articles[4]["link"]
 
 
 @views.route('/', methods=['GET', 'POST'])
@@ -179,9 +179,10 @@ def athletics():
 
 
     return render_template("athletics.html", user=current_user, run=today_run, average=round(average,2),
-                           total_run=total_run, div_placeholder=Markup(my_plot_div), date1=date1, title1=title1,
-                           link1=link1, date2=date2, title2=title2, link2=link2, date3=date3, title3=title3, link3=link3,
-                           date4=date4, title4=title4, link4=link4, date5=date5, title5=title5, link5=link5)
+                           total_run=total_run, div_placeholder=Markup(my_plot_div))
+    # , date1=date1, title1=title1,
+    #                        link1=link1, date2=date2, title2=title2, link2=link2, date3=date3, title3=title3, link3=link3,
+    #                        date4=date4, title4=title4, link4=link4, date5=date5, title5=title5, link5=link5)
 
 
 @views.route('/reading', methods=['POST', 'GET'])
