@@ -1,13 +1,18 @@
-from flask import Blueprint, render_template, request, flash, jsonify
-from flask_login import login_user, login_required, logout_user, current_user
-from .models import Note, Kilometers, Reading
-from . import db
-import json
 import datetime
-from plotly.offline import plot
-from plotly.graph_objs import Scatter
-from flask import Markup
+import json
 from datetime import timedelta
+
+import plotly.express as px
+from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Markup
+from flask_login import login_required, current_user
+from plotly.graph_objs import Scatter
+from plotly.offline import plot
+import plotly.graph_objs as go
+
+from . import db
+from .models import Note, Kilometers, Reading
+
 # from .news import get_news
 
 
@@ -116,8 +121,25 @@ def athletics():
 
     print(trainings)
 
-
+    # plot trainings
     my_plot_div = plot([Scatter(x=dates, y=trainings)], output_type='div')
+
+    # plot week's average
+    weeks = []
+    total_week = []
+    for i in range(int(len(trainings)/7)):
+        weeks.append(i+1)
+        sum= 0
+        for j in range(7):
+            sum = sum + trainings[(7*i) + (1*j)]
+        total_week.append(sum)
+
+
+    print(total_week)
+    data = [go.Bar(x=weeks, y=total_week)]
+
+    my_week_average = plot( data, output_type='div')
+
 
     # calculate the average
     length = 0
@@ -179,7 +201,7 @@ def athletics():
 
 
     return render_template("athletics.html", user=current_user, run=today_run, average=round(average,2),
-                           total_run=round(total_run,2), div_placeholder=Markup(my_plot_div))
+                           total_run=round(total_run,2), div_placeholder=Markup(my_plot_div), graph_bar=Markup(my_week_average))
     # , date1=date1, title1=title1,
     #                        link1=link1, date2=date2, title2=title2, link2=link2, date3=date3, title3=title3, link3=link3,
     #                        date4=date4, title4=title4, link4=link4, date5=date5, title5=title5, link5=link5)
@@ -240,6 +262,20 @@ def reading():
 
     reads = Reading.query.filter_by(user_id=f"{current_user.id}").all()
 
+    weeks = []
+    total_week = []
+    for i in range(int(len(pages) / 7)):
+        weeks.append(i + 1)
+        sum = 0
+        for j in range(7):
+            sum = sum + pages[(7 * i) + (1 * j)]
+        total_week.append(sum)
+
+    print(total_week)
+    data = [go.Bar(x=weeks, y=total_week)]
+
+    my_week_average = plot(data, output_type='div')
+
     # calculate the average
     length = 0
     for read in reads:
@@ -294,7 +330,7 @@ def reading():
         today_read = read_pages
 
     return render_template("reading.html", user=current_user, today_read=today_read, average=round(average, 1),
-                           total_read=total_read, div_placeholder=Markup(my_plot_div))
+                           total_read=total_read, div_placeholder=Markup(my_plot_div), graph_bar=Markup(my_week_average))
 
 
 
