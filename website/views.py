@@ -11,7 +11,7 @@ from plotly.offline import plot
 import plotly.graph_objs as go
 
 from . import db
-from .models import Note, Kilometers, Reading
+from .models import Note, Kilometers, Reading, Library
 
 # from .news import get_news
 
@@ -237,8 +237,8 @@ def reading():
                 pages[j] = pages[j + 1]
                 pages[j + 1] = val2
 
-    print(dates)
-    print(pages)
+    #print(dates)
+    #print(pages)
 
     while str(today) > str(dates[n-1]):
         today = today + timedelta(days=-1)
@@ -271,7 +271,7 @@ def reading():
             sum = sum + pages[(7 * i) + (1 * j)]
         total_week.append(sum)
 
-    print(total_week)
+    #print(total_week)
     data = [go.Bar(x=weeks, y=total_week)]
 
     my_week_average = plot(data, output_type='div')
@@ -301,36 +301,58 @@ def reading():
 
     # if press the submit button
     if request.method == 'POST':
-        read_pages = request.form.get('read')
-        print(current_user.id)
-        id_item = current_user.id
-        today = datetime.date.today()
 
+        # for library button
+        if request.form["button"] == "button2":
+            # take the data
+            book_title = request.form.get('book_title')
+            book_author = request.form.get('book_author')
+            today = datetime.date.today()
 
-        if len(read_pages) < 0:
-            flash('Not valid!', category='error')
-        else:
-            if Reading.query.filter_by(date=f"{today}") and Reading.query.filter_by(user_id=f"{current_user.id}").first():
-                reads = Reading.query.filter_by(date=f"{today}").all()
-                for read in reads:
-                    print(read.user_id)
-                    if read.user_id == current_user.id:
-                        read.pages = read_pages
-                        db.session.commit()
-                print("exista")
-
-
-            else:
-                save = Reading(pages=read_pages, date=f"{today}", user_id=id_item)
+            # add book to the database
+            if len(book_title) > 0 and len(book_author) > 0:
+                save = Library(title=book_title, save_date=f"{today}", author=book_author , user_id=current_user.id)
                 db.session.add(save)  # adding the note to the database
                 db.session.commit()
-                flash('Save added!', category='success')
+                flash('Book added!', category='success')
+            else:
+                flash('Not valid!', category='error')
 
 
-        today_read = read_pages
+
+        # for daily reading
+        elif request.form["button"] == "button1":
+
+            read_pages = request.form.get('read')
+            # print(current_user.id)
+            id_item = current_user.id
+            today = datetime.date.today()
+
+
+            if len(read_pages) < 0:
+                flash('Not valid!', category='error')
+            else:
+                if Reading.query.filter_by(date=f"{today}") and Reading.query.filter_by(user_id=f"{current_user.id}").first():
+                    reads = Reading.query.filter_by(date=f"{today}").all()
+                    for read in reads:
+                        print(read.user_id)
+                        if read.user_id == current_user.id:
+                            read.pages = read_pages
+                            db.session.commit()
+                    print("exista")
+
+
+                else:
+                    save = Reading(pages=read_pages, date=f"{today}", user_id=id_item)
+                    db.session.add(save)  # adding the note to the database
+                    db.session.commit()
+                    flash('Save added!', category='success')
+
+            today_read = read_pages
 
     return render_template("reading.html", user=current_user, today_read=today_read, average=round(average, 1),
                            total_read=total_read, div_placeholder=Markup(my_plot_div), graph_bar=Markup(my_week_average))
+
 
 
 

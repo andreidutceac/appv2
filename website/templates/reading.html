@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1 align="center">Daily read</h1>
-<form method="POST">
+<form action="/reading" method="POST">
   <div class="form-group">
     <label for="read">How many pages did you read today?</label>
     <input
@@ -13,7 +13,7 @@
     />
   </div>
    <br />
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" name="button" value="button1" class="btn btn-primary">Submit</button>
 </form>
 
 <br>
@@ -29,5 +29,55 @@
 <h1 align="center">Weekly read</h1>
 
 {{ graph_bar }}
+
+<br>
+<h1 align="center">My Library</h1>
+
+<form action="/reading" method="POST">
+  <h3>Add new book</h3>
+  <div class="form-group books">
+    <label for="read">Book title</label>
+    <input
+      type="string"
+      class="form-control"
+      id="book_title"
+      name="book_title"
+    />
+    <label for="read">Book author</label>
+    <input
+      type="string"
+      class="form-control"
+      id="book_author"
+      name="book_author"
+    />
+
+  </div>
+   <br />
+  <button type="submit" value="button2" name="button">Submit</button>
+</form>
+
+<div class="container">
+  <h2>Book Library</h2>
+  <table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% set x = 0 %}
+    {% for book in user.books %}
+
+      <tr>
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td> {{ book.save_date }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
 
 {% endblock %}

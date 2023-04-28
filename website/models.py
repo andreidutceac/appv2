@@ -35,3 +35,13 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(150))
     notes = db.relationship('Note')
     km = db.relationship('Kilometers')
+    pages = db.relationship('Reading')
+    books = db.relationship('Library')
+
+
+class Library(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100))
+    author = db.Column(db.String(50))
+    save_date = db.Column(db.String(20))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
