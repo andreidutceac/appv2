@@ -318,6 +318,9 @@ def reading():
             else:
                 flash('Not valid!', category='error')
 
+            book_author = ''
+            book_title = ''
+
 
 
         # for daily reading
