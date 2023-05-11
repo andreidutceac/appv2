@@ -14,7 +14,7 @@ def create_app():
     #conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     # app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
     app.config['SECRET_KEY'] = '8893343f4ef43'
-    DATABASE_URL1 = "postgresql://fqznwmzmqiceex:738c7ea048798ed49afaa61d99a91273ee3eb42ff704ddaa2ed4c9a5c8dc5d99@ec2-34-251-233-253.eu-west-1.compute.amazonaws.com:5432/d1i3qosk54evtj"
+    DATABASE_URL1 = "postgresql://xmsgovjuxnlmfl:c5ab21eb4039b171a3d3b2c479b10d2ad783cbc91d97b2eef1a71cee7bcbf4cb@ec2-34-254-138-204.eu-west-1.compute.amazonaws.com:5432/ddfqfc99vrkd6r"
     # DATABASE_URL1.encode('utf-8')
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL1
     # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", f'sqlite:///{DB_NAME}').replace("postgres://", "postgresql://", 1)
