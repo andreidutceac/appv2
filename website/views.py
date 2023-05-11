@@ -169,6 +169,8 @@ def athletics():
 
     # if press the submit button
     if request.method == 'POST':
+
+        today_run = 0
         today = datetime.date.today()
         run_distance = request.form.get('run')
         #print(run_distance)
@@ -326,6 +328,7 @@ def reading():
         # for daily reading
         elif request.form["button"] == "button1":
 
+            today_read = 0
             read_pages = request.form.get('read')
             # print(current_user.id)
             id_item = current_user.id
